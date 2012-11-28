@@ -257,12 +257,14 @@ index, but for now you must reopen the collection to get back to the beginning.
 Filtering
 ---------
 
+Filtering can either be done using a spatial relation or a property filter.
+
 With some vector data formats a spatial index accompanies the data file,
-allowing efficient bounding box searches. A collection's
-:py:meth:`~fiona.collection.Collection.filter` method returns an iterator over
-records that intersect a given ``(minx, miny, maxx, maxy)`` bounding box. The
-collection's own coordinate reference system (see below) is used to interpret
-the box's values.
+allowing efficient bounding box searches. Given the ``bbox`` parameter, a
+collection's :py:meth:`~fiona.collection.Collection.filter` method returns an
+iterator over records that intersect a given ``(minx, miny, maxx, maxy)``
+bounding box. The collection's own coordinate reference system (see below) is
+used to interpret the box's values.
 
 .. sourcecode:: pycon
 
@@ -270,6 +272,16 @@ the box's values.
   >>> hits = c.filter(bbox=(-5.0, 55.0, 0.0, 60.0))
   >>> len(list(hits))
   7
+
+Given the ``query`` attribute, the data source can also be filtered by an
+SQL-WHERE-like query string operating on the properties of the features:
+
+.. sourcecode:: pycon
+
+  >>> c = collection("docs/data/test_uk.shp", "r")
+  >>> hits = c.filter(query="POP_CNTRY > 100")
+  >>> len(list(hits))
+  48
 
 Closing Files
 -------------
