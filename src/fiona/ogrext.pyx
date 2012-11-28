@@ -738,7 +738,7 @@ cdef class Iterator:
     # Reference to its Collection
     cdef collection
 
-    def __init__(self, collection, bbox=None):
+    def __init__(self, collection, bbox=None, query=None):
         if collection.session is None:
             raise ValueError("I/O operation on closed collection")
         self.collection = collection
@@ -749,6 +749,8 @@ cdef class Iterator:
         if bbox:
             ograpi.OGR_L_SetSpatialFilterRect(
                 cogr_layer, bbox[0], bbox[1], bbox[2], bbox[3])
+        if query:
+            ograpi.OGR_L_SetAttributeFilter(cogr_layer, query)
 
     def __iter__(self):
         return self

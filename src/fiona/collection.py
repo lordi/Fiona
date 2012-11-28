@@ -70,16 +70,17 @@ class Collection(object):
             self._crs = self.session.get_crs()
         return self._crs
 
-    def filter(self, bbox=None):
-        """Returns an iterator over records, but filtered by a test for
-        spatial intersection with the provided ``bbox``, a (minx, miny,
-        maxx, maxy) tuple."""
+    def filter(self, bbox=None, query=None):
+        """Returns an iterator over records, but filtered either by a
+        test for spatial intersection with the provided ``bbox``, a
+        (minx, miny, maxx, maxy) tuple and/or by an attribute filter,
+        provided by ``query`` (e.g. "population > 1000000")."""
         if self.closed:
             raise ValueError("Collection is not open for reading")
         elif self.mode != 'r':
             raise IOError("Collection is not open for reading")
         if self.iterator is None:
-            self.iterator = Iterator(self, bbox)
+            self.iterator = Iterator(self, bbox, query)
         return self.iterator
 
     def __iter__(self):

@@ -89,6 +89,7 @@ cdef extern from "ogr_api.h":
     void *  OGR_L_GetSpatialRef (void *layer)
     void    OGR_L_ResetReading (void *layer)
     void    OGR_L_SetSpatialFilter (void *layer, void *geometry)
+    void    OGR_L_SetAttributeFilter (void *layer, char *query)
     void    OGR_L_SetSpatialFilterRect (
                 void *layer, double minx, double miny, double maxx, double maxy
                 )
